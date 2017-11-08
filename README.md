@@ -14,8 +14,6 @@ for s in page:
     print(a.dump_json())
 ```
 
------------------------------------------------------------
-
 ## class ArticleSummary: alias to Summary
 
 ### attr
@@ -55,8 +53,6 @@ for s in page:
     return ArticleSummary by summary tag
 ```
 
------------------------------------------------------------
-
 ## class Page [DO NOT USE IT DIRECTLY]
 
 ### class attr
@@ -72,8 +68,6 @@ for s in page:
 (string) Page.url                       Page url without ptt domain name
 (string) Page.html                      html of Page
 ```
-
------------------------------------------------------------
 
 ## class ArticleListPage(Page)
 
@@ -101,7 +95,7 @@ for s in page:
 (ArticleListPage) ArticleListPage.newest   ArticleListPage of related_urls['newest']
 ```
 
-### classmethod ----------------------------------------------------------------------------------
+### classmethod
 
 ```python
 # alias to Board(board, index)
@@ -109,14 +103,12 @@ for s in page:
     return ArticleListPage by board name (and index)
 ```
 
-### iter -----------------------------------------------------------------------------------------
+### iter
     
 ```python
 for ArticleSummary in ArticleListPage:
     do something with ArticleSummary
 ```
-
------------------------------------------------------------
 
 ## class ArticlePage(Page): alias to Article
 
@@ -158,8 +150,6 @@ for ArticleSummary in ArticleListPage:
     return  ArticlePage by board name and aid
 ```
 
------------------------------------------------------------
-
 ## class Pushes
 
 ### attr
@@ -186,15 +176,11 @@ for ArticleSummary in ArticleListPage:
 (void)        Pushes.countit            set Pushes.count
 ```
 
------------------------------------------------------------
-
 ## nameedtuple Msg
 
 ```python
 collections.namedtuple('Msg', ['type', 'user', 'content', 'ipdatetime'])
 ```
-
------------------------------------------------------------
 
 ## self defined Exceptions
 
@@ -202,8 +188,6 @@ collections.namedtuple('Msg', ['type', 'user', 'content', 'ipdatetime'])
 * NoGivenURLForPage
 * PageNotFound
 * ArtitcleIsRemove
-
------------------------------------------------------------
 
 ## utility functions
 
