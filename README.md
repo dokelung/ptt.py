@@ -20,6 +20,7 @@ for s in page:
 
 ### attr
 
+```python
 (string) ArticleSummary.title          title of Article
 (string) ArticleSummary.category       string in syntax "[" and "]" of title
 
@@ -38,16 +39,21 @@ for s in page:
 ( bool ) ArticleSummary.isreply        True if 'Re:' in title else False
 ( bool ) ArticleSummary.isforward      True if 'Fw:' in title else False
 ( bool ) ArticleSummary.isremoved      True if Article has been removed else False
+```
 
 ### API
 
+```python
 (ArticlePage) ArticleSummary.read() 
     return corresponding ArticlePage if it is not removed
-    
+```
+
 ### classmethod
 
+```python
 (ArticleSummary) ArticleSummary.from_bs_tag(tag)
     return ArticleSummary by summary tag
+```
 
 -----------------------------------------------------------
 
@@ -55,13 +61,17 @@ for s in page:
 
 ### class attr
 
+```python
 (string) Page.ptt_domain                'https://www.ptt.cc'
 (string) Page.ask_over_18_url           '/ask/over18'
+```
 
 ### attr
  
+```python
 (string) Page.url                       Page url without ptt domain name
 (string) Page.html                      html of Page
+```
 
 -----------------------------------------------------------
 
@@ -69,6 +79,7 @@ for s in page:
 
 ### attr
 
+```python
 (string) ArticleListPage.board                  board name of this ArticleListPage
 ( int  ) ArticleListPage.idx                    index of ArticleListPage
 
@@ -88,12 +99,15 @@ for s in page:
 (ArticleListPage) ArticleListPage.next     ArticleListPage of related_urls['next']
 (ArticleListPage) ArticleListPage.oldest   ArticleListPage of related_urls['oldest']
 (ArticleListPage) ArticleListPage.newest   ArticleListPage of related_urls['newest']
+```
 
 ### classmethod ----------------------------------------------------------------------------------
 
-@alias to Board(board, index)
+```python
+# alias to Board(board, index)
 (ArticleListPage) ArticleListPage.from_board(board, index)
     return ArticleListPage by board name (and index)
+```
 
 ### iter -----------------------------------------------------------------------------------------
     
@@ -108,6 +122,7 @@ for ArticleSummary in ArticleListPage:
 
 ### attr
 
+```python
 (string)   ArticlePage.title       title of Article
 (string)   ArticlePage.category    string in "[" and "]" of title
 
@@ -126,17 +141,22 @@ for ArticleSummary in ArticleListPage:
 
 ( bool )   ArticlePage.isreply     True if 'Re:' in title else False
 ( bool )   ArticlePage.isforward   True if 'Fw:' in title else False
+```
 
 ### API
 
+```python
 (string)  ArticlePage.dump_json()
     dump json string with data
         "board", "aid", "author", "date", "content", "ip", "pushes_count", "pushes"
+```
 
 ### classmethod
 
+```python
 (ArticlePage) ArticlePage.from_board_aid(board, aid)
     return  ArticlePage by board name and aid
+```
 
 -----------------------------------------------------------
 
@@ -144,6 +164,7 @@ for ArticleSummary in ArticleListPage:
 
 ### attr
 
+```python
 (ArticlePage) Pushes.article            ArticlePage of these pushes
 
 ( list )      Pushes.msgs               list of Msg(self defined namedtuple)
@@ -156,11 +177,14 @@ for ArticleSummary in ArticleListPage:
                 Pushes.count['neutral']   neutral msg count
 
 (string)      Pushes.simple_expression  string expression of all msgs
-            
+```
+
 ### API
 
+``` python
 (void)        Pushes.addmsg(Msg)        add a msg to Pushes
 (void)        Pushes.countit            set Pushes.count
+```
 
 -----------------------------------------------------------
 
