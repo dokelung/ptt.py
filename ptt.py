@@ -1,9 +1,11 @@
-from bs4 import BeautifulSoup
-import requests
 import urllib
 import datetime
 import collections
 import json
+import argparse
+
+import requests
+from bs4 import BeautifulSoup
 
 
 # exception
@@ -83,7 +85,7 @@ class ArticleSummary(object):
             author = tag.find('div', class_='author').get_text().strip()
             mark = tag.find('div', class_='mark').get_text().strip()
         except:
-            print(tag)
+            # print(tag)
             raise InValidBeautifulSoupTag
 
         return cls(title, url, score, date, author, mark, removeinfo)
@@ -123,7 +125,7 @@ class Page(object):
         if resp.status_code == requests.codes.ok:
             self.html = resp.text
         else:
-            print(resp.status_code)
+            # print(resp.status_code)
             raise PageNotFound
 
 
@@ -338,3 +340,8 @@ class Pushes:
 Summary = ArticleSummary
 Article = ArticlePage
 Board = ArticleListPage.from_board
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='ptt.py')
+    args = parser.parse_args()
