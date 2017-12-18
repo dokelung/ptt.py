@@ -46,22 +46,6 @@ for s in page:
 |---|---|---|
 | ArticleSummary.from_bs_tag(tag) | `ArticleSummary` | return ArticleSummary by summary tag |
 
-## class Page [DO NOT USE IT DIRECTLY]
-
-### class attr
-
-```python
-(string) Page.ptt_domain                'https://www.ptt.cc'
-(string) Page.ask_over_18_url           '/ask/over18'
-```
-
-### attr
- 
-```python
-(string) Page.url                       Page url without ptt domain name
-(string) Page.html                      html of Page
-```
-
 ## class ArticleListPage(Page)
 
 ### attr
