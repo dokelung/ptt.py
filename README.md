@@ -79,69 +79,51 @@ for ArticleSummary in ArticleListPage:
 
 ## class ArticlePage(Page): alias to Article
 
-### attr
+### attribute
 
-```python
-(string)   ArticlePage.title       title of Article
-(string)   ArticlePage.category    string in "[" and "]" of title
-
-(string)   ArticlePage.board       board name of Article
-(string)   ArticlePage.aid         Article ID
-
-(string)   ArticlePage.date        string of Article date (e.g. Tue Feb 16 20:15:23 2016)
-(datetime) ArticlePage.datetime    datetime format of date
-
-(string)   ArticlePage.author      string of Article author
-(string)   ArticlePage.ip          author's ip
-(stirng)   ArticlePage.signature   signature string of the author
-
-(Pushes)   ArticlePage.pushes      Pushes is a class which collects all pushes in article
-(string)   ArticlePage.content     main content of article using html format
-
-( bool )   ArticlePage.isreply     True if 'Re:' in title else False
-( bool )   ArticlePage.isforward   True if 'Fw:' in title else False
-```
+| Attr Name | Type | Note | Example |
+|---|---|---|---|
+| ArticlePage.title | str | title of Article | |
+| ArticlePage.category | str | string in `'['` and `']'` of title | |
+| ArticlePage.board | str | board name of Article | |
+| ArticlePage.aid | str | Article ID | |
+| ArticlePage.date | str | string of Article date | `'Tue Feb 16 20:15:23 2016'` |
+| ArticlePage.datetime | datetime | datetime format of date | |
+| ArticlePage.author | str | string of Article author | |
+| ArticlePage.ip | str | author's ip | |
+| ArticlePage.signature | str | signature string of the author | |
+| ArticlePage.pushes | `Pushes` | Pushes is a class which collects all pushes in article | |
+| ArticlePage.content | str | main content of article using html format | |
+| ArticlePage.isreply | bool | `True` if `'Re:'` in title else `False` | |
+| ArticlePage.isforward | bool | `True` if `'Fw:'` in title else `False` | |
 
 ### API
 
-```python
-(string)  ArticlePage.dump_json()
-    dump json string with data
-        "board", "aid", "author", "date", "content", "ip", "pushes_count", "pushes"
-```
+| API Name | Return Type | Note |
+|---|---|---|
+| ArticlePage.dump_json() | str | dump json string with data:  board, aid, author, date, content, ip, pushes_count, pushes |
 
-### classmethod
+### classmethod (Constructor)
 
-```python
-(ArticlePage) ArticlePage.from_board_aid(board, aid)
-    return  ArticlePage by board name and aid
-```
+| classmethod Name | Return Type | Note |
+|---|---|---|
+| ArticlePage.from_board_aid(board, aid) | `ArticlePage` | return `ArticlePage` by board name and aid |
 
 ## class Pushes
 
-### attr
+### attribute
 
-```python
-(ArticlePage) Pushes.article            ArticlePage of these pushes
-
-( list )      Pushes.msgs               list of Msg(self defined namedtuple)
-
-( dict )      Pushes.count              all types of count
-                Pushes.count['all']       total msg in Pushes
-                Pushes.count['score']     positive msg count - negative msg count
-                Pushes.count['like']      positive msg count
-                Pushes.count['boo']       negative msg count
-                Pushes.count['neutral']   neutral msg count
-
-(string)      Pushes.simple_expression  string expression of all msgs
-```
-
-### API
-
-``` python
-(void)        Pushes.addmsg(Msg)        add a msg to Pushes
-(void)        Pushes.countit            set Pushes.count
-```
+| Attr Name | Type | Note | Example |
+|---|---|---|---|
+| Pushes.article | `ArticlePage` | ArticlePage of these pushes | |
+| Pushes.msgs | list | list of `Msg`(self defined namedtuple) | |
+| Pushes.count | dict | all types of count | |
+| Pushes.count['all'] | int | total msg in Pushes | |
+| Pushes.count['score'] | int | positive msg count - negative msg count | |
+| Pushes.count['like'] | int | positive msg count | |
+| Pushes.count['boo'] | int | negative msg count | |
+| Pushes.count['neutral'] | int | neutral msg count | |
+| Pushes.simple_expression | str | string expression of all msgs | |
 
 ## nameedtuple Msg
 
@@ -151,13 +133,13 @@ collections.namedtuple('Msg', ['type', 'user', 'content', 'ipdatetime'])
 
 ## self defined Exceptions
 
-* InValidBeautifulSoupTag
-* NoGivenURLForPage
-* PageNotFound
-* ArtitcleIsRemove
+* `InValidBeautifulSoupTag`
+* `NoGivenURLForPage`
+* `PageNotFound`
+* `ArtitcleIsRemove`
 
 ## utility functions
 
-* parse_std_url
-* parse_title
-* parse_username
+* `parse_std_url`
+* `parse_title`
+* `parse_username`
