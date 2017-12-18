@@ -16,42 +16,35 @@ for s in page:
 
 ## class ArticleSummary: alias to Summary
 
-### attr
+### attribute
 
-```python
-(string) ArticleSummary.title          title of Article
-(string) ArticleSummary.category       string in syntax "[" and "]" of title
-
-(string) ArticleSummary.url            url of the Article without ptt domain name
-(string) ArticleSummary.board          board name of Article
-(string) ArticleSummary.aid            Article ID
-
-(string) ArticleSummary.date           string of Article date (e.g. '7/24')
-(string) ArticleSummary.author         string of Article author (only author id)
-
-(string) ArticleSummary.score          string of score or '爆' for score>99 or 'X' for score<0
-(string) ArticleSummary.mark           Article mark (e.g. M)
-
-(string) ArticleSummary.removeinfo     remove infomation written in title
-
-( bool ) ArticleSummary.isreply        True if 'Re:' in title else False
-( bool ) ArticleSummary.isforward      True if 'Fw:' in title else False
-( bool ) ArticleSummary.isremoved      True if Article has been removed else False
-```
+| Attr Name | Type | Note | Example |
+|---|---|---|---|
+| ArticleSummary.title | str | title of Article | |
+| ArticleSummary.category | str | string in syntax `'['` and `']'` of title | |
+| ArticleSummary.url | str | url of the Article without ptt domain name | |
+| ArticleSummary.board | str | board name of Article | |
+| ArticleSummary.aid | str | Article ID | |
+| ArticleSummary.date | str | string of Article date | `'7/24'` |
+| ArticleSummary.author | str | string of Article author (only author id) | |
+| ArticleSummary.score | str | string of score or `'爆'` for score>99 or `'X'` for score<0 | `'爆'`, `'X'`, `'20'`|
+| ArticleSummary.mark | str | Article mark | `'M'` |
+| ArticleSummary.removeinfo | str | remove infomation written in title | |
+| ArticleSummary.isreply | bool | `True` if `'Re:'` in title else `False` | |
+| ArticleSummary.isforward | bool | `True` if `'Fw:'` in title else `False` | |
+| ArticleSummary.isremoved | bool | `True` if Article has been removed else `False` | |
 
 ### API
 
-```python
-(ArticlePage) ArticleSummary.read() 
-    return corresponding ArticlePage if it is not removed
-```
+| API Name | Return Type | Note |
+|---|---|---|
+| ArticleSummary.read() | `ArticlePage` | return corresponding ArticlePage if it is not removed |
 
-### classmethod
+### classmethod (Constructor)
 
-```python
-(ArticleSummary) ArticleSummary.from_bs_tag(tag)
-    return ArticleSummary by summary tag
-```
+| classmethod Name | Return Type | Note |
+|---|---|---|
+| ArticleSummary.from_bs_tag(tag) | `ArticleSummary` | return ArticleSummary by summary tag |
 
 ## class Page [DO NOT USE IT DIRECTLY]
 
