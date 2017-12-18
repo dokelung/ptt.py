@@ -48,43 +48,33 @@ for s in page:
 
 ## class ArticleListPage(Page)
 
-### attr
+### attribute
 
-```python
-(string) ArticleListPage.board                  board name of this ArticleListPage
-( int  ) ArticleListPage.idx                    index of ArticleListPage
+| Attr Name | Type | Note | Example |
+|---|---|---|---|
+| ArticleListPage.board | str | board name of this ArticleListPage | |
+| ArticleListPage.idx | int | index of ArticleListPage | |
+| ArticleListPage.article_summary_tags | list | bs tags of ArticleSummary | |
+| ArticleListPage.related_urls | dict | urls of related pages, keys = `['board', 'man', 'previous', 'next', 'oldest', 'newest']` | |
+| ArticleListPage.article_summaries | generator of ArticleSummary | ArticleSummary generator of this ArticleListPage | |
+| ArticleListPage.previous | ArticleListPage | `ArticleListPage` of `related_urls['previous']` |
+| ArticleListPage.next | ArticleListPage | `ArticleListPage` of `related_urls['next']` |
+| ArticleListPage.oldest | ArticleListPage | `ArticleListPage` of `related_urls['oldest']` |
+| ArticleListPage.newest | ArticleListPage | `ArticleListPage` of `related_urls['newest']` |
 
-( list ) ArticleListPage.article_summary_tags   bs tags of ArticleSummary
+### classmethod (Constructor)
 
-( dict ) ArticleListPage.related_urls           urls of related pages        
-            ArticleListPage.related_urls['board']
-            ArticleListPage.related_urls['man']
-            ArticleListPage.related_urls['previous']
-            ArticleListPage.related_urls['next']
-            ArticleListPage.related_urls['oldest']
-            ArticleListPage.related_urls['newest']
+| classmethod Name | Return Type | Note |
+|---|---|---|
+| ArticleListPage.from_board(board, index) | `ArticleListPage` | return ArticleListPage by board name (and index), alias to `Board(board, index)` |
 
-( generator ) ArticleListPage.article_summaries list of ArticleSummary of this ArticleListPage
+### as iterator
 
-(ArticleListPage) ArticleListPage.previous ArticleListPage of related_urls['previous']
-(ArticleListPage) ArticleListPage.next     ArticleListPage of related_urls['next']
-(ArticleListPage) ArticleListPage.oldest   ArticleListPage of related_urls['oldest']
-(ArticleListPage) ArticleListPage.newest   ArticleListPage of related_urls['newest']
-```
+Example:
 
-### classmethod
-
-```python
-# alias to Board(board, index)
-(ArticleListPage) ArticleListPage.from_board(board, index)
-    return ArticleListPage by board name (and index)
-```
-
-### iter
-    
 ```python
 for ArticleSummary in ArticleListPage:
-    do something with ArticleSummary
+    # do something with ArticleSummary
 ```
 
 ## class ArticlePage(Page): alias to Article
