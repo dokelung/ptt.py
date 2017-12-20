@@ -40,7 +40,7 @@ for s in page:
 |---|---|---|
 | read() | ArticlePage | return corresponding `ArticlePage` if it is not removed |
 
-## class ArticleListPage(Page)
+## class ArticleListPage(Page): alias to Board
 
 ### attribute
 
@@ -48,17 +48,16 @@ for s in page:
 |---|---|---|---|
 | board | str | board name of this ArticleListPage | `'Gossiping'` |
 | idx | int | index of ArticleListPage | `29585` |
-| related_urls | dict | urls of related pages, keys = `['board', 'man', 'previous', 'next', 'oldest', 'newest']` | |
 | related_urls['board'] | str | latest article list page url of the board | `'/bbs/Gossiping/index.html'` |
 | related_urls['man'] | str | 精華區 url of the board | `'/man/Gossiping/index.html'` |
 | related_urls['previous'] | str | preivious article list page url (`None` if not exists) | `'/man/Gossiping/index29584.html'` |
 | related_urls['next'] | str | next article list page url (`None` if not exists) | `None` |
-| related_urls['oldest'] | str | oldest article list page url | `/bbs/Gossiping/index1.html` |
-| related_urls['newest'] | str | newest article list page url | `/bbs/Gossiping/index.html` |
-| previous | ArticleListPage | `ArticleListPage` of `related_urls['previous']` |
-| next | ArticleListPage | `ArticleListPage` of `related_urls['next']` |
-| oldest | ArticleListPage | `ArticleListPage` of `related_urls['oldest']` |
-| newest | ArticleListPage | `ArticleListPage` of `related_urls['newest']` |
+| related_urls['oldest'] | str | oldest article list page url | `'/bbs/Gossiping/index1.html'` |
+| related_urls['newest'] | str | newest article list page url | `'/bbs/Gossiping/index.html'` |
+| previous | ArticleListPage | `ArticleListPage` of `related_urls['previous']` | |
+| next | ArticleListPage | `ArticleListPage` of `related_urls['next']` | |
+| oldest | ArticleListPage | `ArticleListPage` of `related_urls['oldest']` | |
+| newest | ArticleListPage | `ArticleListPage` of `related_urls['newest']` | |
 | article_summaries | generator of ArticleSummary | ArticleSummary generator of this ArticleListPage | |
 
 ### classmethod (Constructor)
@@ -116,7 +115,6 @@ for ArticleSummary in ArticleListPage:
 |---|---|---|---|
 | article | `ArticlePage` | ArticlePage of these pushes | |
 | msgs | list | list of `Msg`(self defined namedtuple) | |
-| count | dict | all types of count | |
 | count['all'] | int | total msg in Pushes | |
 | count['score'] | int | positive msg count - negative msg count | |
 | count['like'] | int | positive msg count | |
