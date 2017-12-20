@@ -82,19 +82,19 @@ for ArticleSummary in ArticleListPage:
 
 | Attr Name | Type | Note | Example |
 |---|---|---|---|
-| ArticlePage.title | str | title of Article | |
-| ArticlePage.category | str | string in `'['` and `']'` of title | |
-| ArticlePage.board | str | board name of Article | |
-| ArticlePage.aid | str | Article ID | |
-| ArticlePage.date | str | string of Article date | `'Tue Feb 16 20:15:23 2016'` |
-| ArticlePage.datetime | datetime | datetime format of date | |
-| ArticlePage.author | str | string of Article author | |
-| ArticlePage.ip | str | author's ip | |
-| ArticlePage.signature | str | signature string of the author | |
-| ArticlePage.pushes | `Pushes` | Pushes is a class which collects all pushes in article | |
-| ArticlePage.content | str | main content of article using html format | |
-| ArticlePage.isreply | bool | `True` if `'Re:'` in title else `False` | |
-| ArticlePage.isforward | bool | `True` if `'Fw:'` in title else `False` | |
+| title | str | title of Article | |
+| category | str | string in `'['` and `']'` of title | |
+| board | str | board name of Article | |
+| aid | str | Article ID | |
+| date | str | string of Article date | `'Tue Feb 16 20:15:23 2016'` |
+| datetime | datetime | datetime format of date | |
+| author | str | string of Article author | |
+| ip | str | author's ip | |
+| signature | str | signature string of the author | |
+| pushes | `Pushes` | Pushes is a class which collects all pushes in article | |
+| content | str | main content of article using html format | |
+| isreply | bool | `True` if `'Re:'` in title else `False` | |
+| isforward | bool | `True` if `'Fw:'` in title else `False` | |
 
 ### API
 
@@ -106,7 +106,7 @@ for ArticleSummary in ArticleListPage:
 
 | classmethod Name | Return Type | Note |
 |---|---|---|
-| ArticlePage.from_board_aid(board, aid) | `ArticlePage` | return `ArticlePage` by board name and aid |
+| ArticlePage.from_board_aid(board, aid) | ArticlePage | return `ArticlePage` by board name and aid |
 
 ## class Pushes
 
@@ -114,15 +114,15 @@ for ArticleSummary in ArticleListPage:
 
 | Attr Name | Type | Note | Example |
 |---|---|---|---|
-| Pushes.article | `ArticlePage` | ArticlePage of these pushes | |
-| Pushes.msgs | list | list of `Msg`(self defined namedtuple) | |
-| Pushes.count | dict | all types of count | |
-| Pushes.count['all'] | int | total msg in Pushes | |
-| Pushes.count['score'] | int | positive msg count - negative msg count | |
-| Pushes.count['like'] | int | positive msg count | |
-| Pushes.count['boo'] | int | negative msg count | |
-| Pushes.count['neutral'] | int | neutral msg count | |
-| Pushes.simple_expression | str | string expression of all msgs | |
+| article | `ArticlePage` | ArticlePage of these pushes | |
+| msgs | list | list of `Msg`(self defined namedtuple) | |
+| count | dict | all types of count | |
+| count['all'] | int | total msg in Pushes | |
+| count['score'] | int | positive msg count - negative msg count | |
+| count['like'] | int | positive msg count | |
+| count['boo'] | int | negative msg count | |
+| count['neutral'] | int | neutral msg count | |
+| simple_expression | str | string expression of all msgs | |
 
 ## nameedtuple Msg
 
