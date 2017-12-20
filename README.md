@@ -26,25 +26,19 @@ for s in page:
 | board | str | board name of Article | `'Gossiping'` |
 | aid | str | Article ID | `'M.1513683634.A.2F5'` |
 | date | str | string of Article date | `'7/24'` |
-| author | str | string of Article author (only author id) | 'jokerndmc' |
+| author | str | string of Article author (only author id) | `'jokerndmc'` |
 | score | str | string of score or `'爆'` for score>99 or `'X'` for score<0 | `'20'` |
 | mark | str | Article mark | `'M'` |
-| removeinfo | str | remove infomation written in title | |
-| isreply | bool | `True` if `'Re:'` in title else `False` | |
-| isforward | bool | `True` if `'Fw:'` in title else `False` | |
-| isremoved | bool | `True` if Article has been removed else `False` | |
+| removeinfo | str | remove infomation written in title | `'(本文已被刪除) [SamuraiJack]'` |
+| isreply | bool | `True` if `'Re:'` in title else `False` | `True` |
+| isforward | bool | `True` if `'Fw:'` in title else `False` | `False` |
+| isremoved | bool | `True` if Article has been removed else `False` | `True` |
 
 ### API
 
 | API Name | Return Type | Note |
 |---|---|---|
-| ArticleSummary.read() | `ArticlePage` | return corresponding ArticlePage if it is not removed |
-
-### classmethod (Constructor)
-
-| classmethod Name | Return Type | Note |
-|---|---|---|
-| ArticleSummary.from_bs_tag(tag) | `ArticleSummary` | return ArticleSummary by summary tag |
+| read() | ArticlePage | return corresponding `ArticlePage` if it is not removed |
 
 ## class ArticleListPage(Page)
 
@@ -52,26 +46,26 @@ for s in page:
 
 | Attr Name | Type | Note | Example |
 |---|---|---|---|
-| ArticleListPage.board | str | board name of this ArticleListPage | `'Gossiping'` |
-| ArticleListPage.idx | int | index of ArticleListPage | `29585` |
-| ArticleListPage.related_urls | dict | urls of related pages, keys = `['board', 'man', 'previous', 'next', 'oldest', 'newest']` | |
-| ArticleListPage.related_urls['board'] | str | latest article list page url of the board | `'/bbs/Gossiping/index.html'` |
-| ArticleListPage.related_urls['man'] | str | 精華區 url of the board | `'/man/Gossiping/index.html'` |
-| ArticleListPage.related_urls['previous'] | str | preivious article list page url (`None` if not exists) | `'/man/Gossiping/index29584.html'` |
-| ArticleListPage.related_urls['next'] | str | next article list page url (`None` if not exists) | `None` |
-| ArticleListPage.related_urls['oldest'] | str | oldest article list page url | `/bbs/Gossiping/index1.html` |
-| ArticleListPage.related_urls['newest'] | str | newest article list page url | `/bbs/Gossiping/index.html` |
-| ArticleListPage.previous | ArticleListPage | `ArticleListPage` of `related_urls['previous']` |
-| ArticleListPage.next | ArticleListPage | `ArticleListPage` of `related_urls['next']` |
-| ArticleListPage.oldest | ArticleListPage | `ArticleListPage` of `related_urls['oldest']` |
-| ArticleListPage.newest | ArticleListPage | `ArticleListPage` of `related_urls['newest']` |
-| ArticleListPage.article_summaries | generator of ArticleSummary | ArticleSummary generator of this ArticleListPage | |
+| board | str | board name of this ArticleListPage | `'Gossiping'` |
+| idx | int | index of ArticleListPage | `29585` |
+| related_urls | dict | urls of related pages, keys = `['board', 'man', 'previous', 'next', 'oldest', 'newest']` | |
+| related_urls['board'] | str | latest article list page url of the board | `'/bbs/Gossiping/index.html'` |
+| related_urls['man'] | str | 精華區 url of the board | `'/man/Gossiping/index.html'` |
+| related_urls['previous'] | str | preivious article list page url (`None` if not exists) | `'/man/Gossiping/index29584.html'` |
+| related_urls['next'] | str | next article list page url (`None` if not exists) | `None` |
+| related_urls['oldest'] | str | oldest article list page url | `/bbs/Gossiping/index1.html` |
+| related_urls['newest'] | str | newest article list page url | `/bbs/Gossiping/index.html` |
+| previous | ArticleListPage | `ArticleListPage` of `related_urls['previous']` |
+| next | ArticleListPage | `ArticleListPage` of `related_urls['next']` |
+| oldest | ArticleListPage | `ArticleListPage` of `related_urls['oldest']` |
+| newest | ArticleListPage | `ArticleListPage` of `related_urls['newest']` |
+| article_summaries | generator of ArticleSummary | ArticleSummary generator of this ArticleListPage | |
 
 ### classmethod (Constructor)
 
 | classmethod Name | Return Type | Note |
 |---|---|---|
-| ArticleListPage.from_board(board, index) | `ArticleListPage` | return ArticleListPage by board name (and index), alias to `Board(board, index)` |
+| ArticleListPage.from_board(board, index) | ArticleListPage | return `ArticleListPage` by board name (and index), alias to `Board(board, index)` |
 
 ### as iterator
 
