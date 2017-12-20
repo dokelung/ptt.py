@@ -3,16 +3,27 @@ import datetime
 import collections
 import json
 import argparse
+import time
 
 import requests
 from bs4 import BeautifulSoup
 
 
 # exception
-class InValidBeautifulSoupTag(Exception): pass
-class NoGivenURLForPage(Exception): pass
-class PageNotFound(Exception): pass
-class ArtitcleIsRemove(Exception): pass
+class InValidBeautifulSoupTag(Exception):
+    pass
+
+
+class NoGivenURLForPage(Exception):
+    pass
+
+
+class PageNotFound(Exception):
+    pass
+
+
+class ArtitcleIsRemove(Exception):
+    pass
 
 
 # utility
@@ -23,6 +34,7 @@ def parse_std_url(url):
     bbs = bbs[1:]
     return bbs, board, basename
 
+
 def parse_title(title):
     _, _, remain = title.partition('[')
     category, _, remain = remain.rpartition(']')
@@ -30,6 +42,7 @@ def parse_title(title):
     isreply = True if 'Re:' in title else False
     isforward = True if 'Fw:' in title else False
     return category, isreply, isforward
+
 
 def parse_username(full_name):
     name, nickname = full_name.split(' (')
@@ -344,13 +357,26 @@ Board = ArticleListPage.from_board
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='ptt.py')
+
+
     parser.add_argument('-b', '--board', metavar='Board', type=str, required=True, help='board name')
     parser.add_argument('-d', '--destination', metavar='DIR', type=str, default='.', help='destination')
+
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('-a', '--aid', metavar='ID', type=str, help='article id')
+
     args = parser.parse_args()
 
-    lst_page = Board(args.board)
-    for summary in lst_page:
-        if summary.isremoved:
-            continue
-        article = summary.read()
-        print(article.aid, article.title if article.title else summary.title)
+    t1 = time.time()
+    if args.aid:
+        article = Article.from_board_aid(args.board, args.aid)
+        print(article.aid, article.title, article.content)
+    else:
+        lst_page = Board(args.board)
+        for summary in lst_page:
+            if summary.isremoved:
+                continue
+            article = summary.read()
+            print(article.aid, article.title if article.title else summary.title)
+    elapsed = time.time()-t1
+    print('total in {:.3} sec.'.format(elapsed))
