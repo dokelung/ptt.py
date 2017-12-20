@@ -10,24 +10,37 @@ from bs4 import BeautifulSoup
 
 
 # exception
-class InValidBeautifulSoupTag(Exception):
+class Error(Exception):
+    """Base class for all exceptions raised by this module"""
     pass
 
 
-class NoGivenURLForPage(Exception):
+class InValidBeautifulSoupTag(Error):
+    """Can not create ArticleSummary because of invalid bs tag"""
     pass
 
 
-class PageNotFound(Exception):
+class NoGivenURLForPage(Error):
+    """Given None or empty url when build page"""
     pass
 
 
-class ArtitcleIsRemove(Exception):
+class PageNotFound(Error):
+    """Can not fetch page by given url"""
+    pass
+
+
+class ArtitcleIsRemoved(Error):
+    """Can not read removed article from ArticleSummary"""
     pass
 
 
 # utility
 def parse_std_url(url):
+    """Parse standard ptt url
+    >>> parse_std_url('https://www.ptt.cc/bbs/Gossiping/M.1512057611.A.16B.html')
+    ('https://www.ptt.cc/bbs', 'Gossiping', 'M.1512057611.A.16B')
+    """
     prefix, _,  basename = url.rpartition('/')
     basename, _, _ = basename.rpartition('.')
     bbs, _, board = prefix.rpartition('/')
@@ -36,6 +49,10 @@ def parse_std_url(url):
 
 
 def parse_title(title):
+    """Parse article title to get more info
+    >>> parse_title('Re: [問卦] 睡覺到底可不可以穿襪子')
+    ('問卦', True, False)
+    """
     _, _, remain = title.partition('[')
     category, _, remain = remain.rpartition(']')
     category = category if category else None
@@ -45,18 +62,23 @@ def parse_title(title):
 
 
 def parse_username(full_name):
+    """Parse user name to get its user account and nickname
+    >>> parse_username('seabox (歐陽盒盒)')
+    ('seabox', '歐陽盒盒')
+    """
     name, nickname = full_name.split(' (')
     nickname = nickname.rstrip(')')
     return name, nickname
 
 
+# Msg is a namedtuple which used to model the info of one of the pushes
 Msg = collections.namedtuple('Msg', ['type', 'user', 'content', 'ipdatetime'])
 
 
-class ArticleSummary(object):
+class ArticleSummary:
+    """Class used to model the article info in ArticleListPage"""
 
     def __init__(self, title, url, score, date, author, mark, removeinfo):
-
         # title
         self.title = title
         self.category, self.isreply, self.isforward = parse_title(title)
@@ -77,7 +99,7 @@ class ArticleSummary(object):
 
     @classmethod
     def from_bs_tag(cls, tag):
-
+        """classmethod for create a ArticleSummary object from corresponding bs tag"""
         try:
             removeinfo = None
             title_tag = tag.find('div', class_='title')
@@ -98,9 +120,8 @@ class ArticleSummary(object):
             date = tag.find('div', class_='date').get_text().strip()
             author = tag.find('div', class_='author').get_text().strip()
             mark = tag.find('div', class_='mark').get_text().strip()
-        except:
-            # print(tag)
-            raise InValidBeautifulSoupTag
+        except Exception:
+            raise InValidBeautifulSoupTag(tag)
 
         return cls(title, url, score, date, author, mark, removeinfo)
 
@@ -111,13 +132,19 @@ class ArticleSummary(object):
         return self.title
 
     def read(self):
+        """Read the Article from url and return ArticlePage
+        raise ArticleIsRemoved error if it is removed
+        """
         if self.isremoved:
-            raise ArtitcleIsRemove
+            raise ArtitcleIsRemoved(self.removeinfo)
         return ArticlePage(self.url)
 
 
-class Page(object):
-    
+class Page:
+    """Base class of page
+    fetch the web page html content by url
+    all its subclass object should call its __init__ first
+    """
     ptt_domain = 'https://www.ptt.cc'
 
     def __init__(self, url):
@@ -132,11 +159,11 @@ class Page(object):
         if resp.status_code == requests.codes.ok:
             self.html = resp.text
         else:
-            # print(resp.status_code)
             raise PageNotFound
 
 
 class ArticleListPage(Page):
+    """Class for model article list page"""
 
     def __init__(self, url):
         super().__init__(url)
@@ -165,6 +192,9 @@ class ArticleListPage(Page):
 
     @classmethod
     def from_board(cls, board, index=''):
+        """classmethod for create a ArticleListPage object from given board name and its index
+        if index is not given, create and return the lastest ArticleListPage of the board
+        """
         url = '/'.join(['/bbs', board, 'index'+str(index)+'.html'])
         return cls(url)
 
@@ -358,12 +388,12 @@ Board = ArticleListPage.from_board
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='ptt.py')
 
-
-    parser.add_argument('-b', '--board', metavar='Board', type=str, required=True, help='board name')
+    parser.add_argument('-b', '--board', metavar='BOARD', type=str, required=True, help='board name')
     parser.add_argument('-d', '--destination', metavar='DIR', type=str, default='.', help='destination')
 
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('-a', '--aid', metavar='ID', type=str, help='article id')
+    group.add_argument('-i', '--index', metavar='START END', nargs=2, type=int, help='start/end index')
 
     args = parser.parse_args()
 
@@ -377,6 +407,6 @@ if __name__ == '__main__':
             if summary.isremoved:
                 continue
             article = summary.read()
-            print(article.aid, article.title if article.title else summary.title)
+            print(article.dump_json())
     elapsed = time.time()-t1
     print('total in {:.3} sec.'.format(elapsed))

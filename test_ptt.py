@@ -35,19 +35,19 @@ class TestOthers(unittest.TestCase):
         for idx, s in enumerate(self.lst_page):
             if s.isremoved:
                 continue
-            if idx==0:
+            if idx == 0:
                 _, _, thing = s.title.rpartition('月')
                 self.assertEqual(thing, '八卦板置底閒聊文')
                 self.assertEqual(s.board, self.board)
                 score_lst = [str(i) for i in range(0, 100)]
-                score_lst.extend(['爆', 'X'])
+                score_lst.extend(['', '爆', 'X'])
                 self.assertIn(s.score, score_lst)
 
     def test_read_and_article_page(self):
         for idx, s in enumerate(self.lst_page):
             if s.isremoved:
                 continue
-            elif idx==0:
+            elif idx == 0:
                 continue
             else:
                 apage = s.read()

@@ -20,13 +20,13 @@ for s in page:
 
 | Attr Name | Type | Note | Example |
 |---|---|---|---|
-| ArticleSummary.title | str | title of Article | |
-| ArticleSummary.category | str | string in syntax `'['` and `']'` of title | |
-| ArticleSummary.url | str | url of the Article without ptt domain name | |
-| ArticleSummary.board | str | board name of Article | |
-| ArticleSummary.aid | str | Article ID | |
+| ArticleSummary.title | str | title of Article | `'[協尋] 12月18日 晚上9點前後  高雄市明誠路 鼎'` |
+| ArticleSummary.category | str | string in syntax `'['` and `']'` of title | `'協尋'` |
+| ArticleSummary.url | str | url of the Article without ptt domain name | `'/bbs/Gossiping/M.1513683634.A.2F5.html'` |
+| ArticleSummary.board | str | board name of Article | `'Gossiping'` |
+| ArticleSummary.aid | str | Article ID | `'M.1513683634.A.2F5'` |
 | ArticleSummary.date | str | string of Article date | `'7/24'` |
-| ArticleSummary.author | str | string of Article author (only author id) | |
+| ArticleSummary.author | str | string of Article author (only author id) | `'jokerndmc'` |
 | ArticleSummary.score | str | string of score or `'爆'` for score>99 or `'X'` for score<0 | `'爆'`, `'X'`, `'20'`|
 | ArticleSummary.mark | str | Article mark | `'M'` |
 | ArticleSummary.removeinfo | str | remove infomation written in title | |
@@ -52,15 +52,20 @@ for s in page:
 
 | Attr Name | Type | Note | Example |
 |---|---|---|---|
-| ArticleListPage.board | str | board name of this ArticleListPage | |
-| ArticleListPage.idx | int | index of ArticleListPage | |
-| ArticleListPage.article_summary_tags | list | bs tags of ArticleSummary | |
+| ArticleListPage.board | str | board name of this ArticleListPage | `'Gossiping'` |
+| ArticleListPage.idx | int | index of ArticleListPage | `29585` |
 | ArticleListPage.related_urls | dict | urls of related pages, keys = `['board', 'man', 'previous', 'next', 'oldest', 'newest']` | |
-| ArticleListPage.article_summaries | generator of ArticleSummary | ArticleSummary generator of this ArticleListPage | |
+| ArticleListPage.related_urls['board'] | str | latest article list page url of the board | `'/bbs/Gossiping/index.html'` |
+| ArticleListPage.related_urls['man'] | str | 精華區 url of the board | `'/man/Gossiping/index.html'` |
+| ArticleListPage.related_urls['previous'] | str | preivious article list page url (`None` if not exists) | `'/man/Gossiping/index29584.html'` |
+| ArticleListPage.related_urls['next'] | str | next article list page url (`None` if not exists) | `None` |
+| ArticleListPage.related_urls['oldest'] | str | oldest article list page url | `/bbs/Gossiping/index1.html` |
+| ArticleListPage.related_urls['newest'] | str | newest article list page url | `/bbs/Gossiping/index.html` |
 | ArticleListPage.previous | ArticleListPage | `ArticleListPage` of `related_urls['previous']` |
 | ArticleListPage.next | ArticleListPage | `ArticleListPage` of `related_urls['next']` |
 | ArticleListPage.oldest | ArticleListPage | `ArticleListPage` of `related_urls['oldest']` |
 | ArticleListPage.newest | ArticleListPage | `ArticleListPage` of `related_urls['newest']` |
+| ArticleListPage.article_summaries | generator of ArticleSummary | ArticleSummary generator of this ArticleListPage | |
 
 ### classmethod (Constructor)
 
