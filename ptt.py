@@ -36,6 +36,7 @@ def parse_username(full_name):
     nickname = nickname.rstrip(')')
     return name, nickname
 
+
 Msg = collections.namedtuple('Msg', ['type', 'user', 'content', 'ipdatetime'])
 
 
@@ -78,7 +79,7 @@ class ArticleSummary(object):
                 score = tag.find('div', class_='nrec').get_text().strip()
             else:
                 title = '本文章已被刪除'
-                url  = ''
+                url = ''
                 score = ''
 
             date = tag.find('div', class_='date').get_text().strip()
@@ -105,7 +106,6 @@ class ArticleSummary(object):
 class Page(object):
     
     ptt_domain = 'https://www.ptt.cc'
-    ask_over_18_url = '/ask/over18'
 
     def __init__(self, url):
         if not url:
@@ -113,15 +113,9 @@ class Page(object):
 
         self.url = url
 
-        s = requests.Session()
         url = urllib.parse.urljoin(self.ptt_domain, self.url)
+        resp = requests.get(url=url, cookies={'over18': '1'}, verify=True, timeout=3)
 
-        # to pass over18 check
-        aurl = urllib.parse.urljoin(self.ptt_domain, self.ask_over_18_url)
-        s.post(aurl, data={'yes': 'yes'})
-
-        # to fetch page
-        resp = s.get(url)
         if resp.status_code == requests.codes.ok:
             self.html = resp.text
         else:
@@ -202,13 +196,18 @@ class ArticlePage(Page):
         meta_value_tags = main_tag.find_all('span', class_='article-meta-value')
 
         # dealing meta
-        self.author = meta_value_tags[0].get_text().strip()
-        self.board = meta_value_tags[1].get_text().strip()
-        self.title = meta_value_tags[2].get_text().strip()
-        self.date = meta_value_tags[3].get_text().strip()
+        try:
+            self.author = meta_value_tags[0].get_text().strip()
+            self.board = meta_value_tags[1].get_text().strip()
+            self.title = meta_value_tags[2].get_text().strip()
+            self.date = meta_value_tags[3].get_text().strip()
 
-        self.category, self.isreply, self.isforward = parse_title(self.title)
-        self.datetime = datetime.datetime.strptime(self.date, '%a %b %d %H:%M:%S %Y')
+            self.category, self.isreply, self.isforward = parse_title(self.title)
+            self.datetime = datetime.datetime.strptime(self.date, '%a %b %d %H:%M:%S %Y')
+        except:
+            self.author, self.board, self.title, self.date = '', '', '', ''
+            self.category, self.isreply, self.isforward = '', False, False
+            self.datetime = None
 
         # remove meta
         for tag in main_tag.select('div.article-metaline'):
@@ -303,6 +302,7 @@ class Pushes:
     def __init__(self, article):
         self.article = article
         self.msgs = []
+        self.count = 0
 
     def __repr__(self):
         return 'Pushes({})'.format(repr(self.article))
@@ -315,7 +315,7 @@ class Pushes:
 
     def countit(self):
         count_types = 'all abs like boo neutral'.split()
-        self.count= dict(zip(count_types,[0, 0, 0, 0, 0]))
+        self.count = dict(zip(count_types, [0, 0, 0, 0, 0]))
         for msg in self.msgs:
             if msg.type == '推':
                 self.count['like'] += 1
@@ -344,4 +344,13 @@ Board = ArticleListPage.from_board
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='ptt.py')
+    parser.add_argument('-b', '--board', metavar='Board', type=str, required=True, help='board name')
+    parser.add_argument('-d', '--destination', metavar='DIR', type=str, default='.', help='destination')
     args = parser.parse_args()
+
+    lst_page = Board(args.board)
+    for summary in lst_page:
+        if summary.isremoved:
+            continue
+        article = summary.read()
+        print(article.aid, article.title if article.title else summary.title)
