@@ -20,19 +20,19 @@ for s in page:
 
 | Attr Name | Type | Note | Example |
 |---|---|---|---|
-| ArticleSummary.title | str | title of Article | `'[協尋] 12月18日 晚上9點前後  高雄市明誠路 鼎'` |
-| ArticleSummary.category | str | string in syntax `'['` and `']'` of title | `'協尋'` |
-| ArticleSummary.url | str | url of the Article without ptt domain name | `'/bbs/Gossiping/M.1513683634.A.2F5.html'` |
-| ArticleSummary.board | str | board name of Article | `'Gossiping'` |
-| ArticleSummary.aid | str | Article ID | `'M.1513683634.A.2F5'` |
-| ArticleSummary.date | str | string of Article date | `'7/24'` |
-| ArticleSummary.author | str | string of Article author (only author id) | `'jokerndmc'` |
-| ArticleSummary.score | str | string of score or `'爆'` for score>99 or `'X'` for score<0 | `'爆'`, `'X'`, `'20'`|
-| ArticleSummary.mark | str | Article mark | `'M'` |
-| ArticleSummary.removeinfo | str | remove infomation written in title | |
-| ArticleSummary.isreply | bool | `True` if `'Re:'` in title else `False` | |
-| ArticleSummary.isforward | bool | `True` if `'Fw:'` in title else `False` | |
-| ArticleSummary.isremoved | bool | `True` if Article has been removed else `False` | |
+| title | str | title of Article | `'[協尋] 12月18日 晚上9點前後  高雄市明誠路 鼎'` |
+| category | str | string in syntax `'['` and `']'` of title | `'協尋'` |
+| url | str | url of the Article without ptt domain name | `'/bbs/Gossiping/M.1513683634.A.2F5.html'` |
+| board | str | board name of Article | `'Gossiping'` |
+| aid | str | Article ID | `'M.1513683634.A.2F5'` |
+| date | str | string of Article date | `'7/24'` |
+| author | str | string of Article author (only author id) | 'jokerndmc' |
+| score | str | string of score or `'爆'` for score>99 or `'X'` for score<0 | `'20'` |
+| mark | str | Article mark | `'M'` |
+| removeinfo | str | remove infomation written in title | |
+| isreply | bool | `True` if `'Re:'` in title else `False` | |
+| isforward | bool | `True` if `'Fw:'` in title else `False` | |
+| isremoved | bool | `True` if Article has been removed else `False` | |
 
 ### API
 
