@@ -12,7 +12,7 @@
 * [[class] ArticlePage (alias to Article)](#class-articlepage-alias-to-article)
   * [example](#example-2)
   * [attribute](#attribute-2)
-  * [API](#api-2)
+  * [API](#api-2)
 * [Self-defined Exceptions](#self-defined-exceptions)
 * [Utility Functions](#utility-functions)
 
