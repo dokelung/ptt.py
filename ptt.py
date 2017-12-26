@@ -163,7 +163,7 @@ class Page:
 
 
 class ArticleListPage(Page):
-    """Class for model article list page"""
+    """Class used to model article list page"""
 
     def __init__(self, url):
         super().__init__(url)
@@ -204,6 +204,9 @@ class ArticleListPage(Page):
     def __iter__(self):
         return self.article_summaries
 
+    def get_article_summary(self, index):
+        return ArticleSummary.from_bs_tag(self.article_summary_tags[index])
+
     @property
     def article_summaries(self):
         return (ArticleSummary.from_bs_tag(tag) for tag in self.article_summary_tags)
@@ -226,6 +229,7 @@ class ArticleListPage(Page):
 
 
 class ArticlePage(Page):
+    """class used to model article page"""
 
     def __init__(self, url):
         super().__init__(url)
@@ -326,21 +330,29 @@ class ArticlePage(Page):
     def __str__(self):
         return self.title
 
-    def dump_json(self):
-        data = {
-            'board': self.board,
-            'aid': self.aid,
-            'author': self.author,
-            'date': self.date,
-            'content': self.content,
-            'ip': self.ip,
-            'pushes_count': self.pushes.count,
-            'pushes': self.pushes.simple_expression
-        }
-        return json.dumps(data, indent=4, sort_keys=True, ensure_ascii=False)
+    def dump_json(self, *attrs, flat=False):
+        """dump json string of this article with specified attrs"""
+        data = {}
+        if not attrs:
+            attrs = ['board', 'aid',
+                     'author',
+                     'date',
+                     'content',
+                     'ip',
+                     'pushes__count', 'pushes__simple_expression']
+        for attr in attrs:
+            if attr.startswith('pushes__'):
+                data[attr] = getattr(self.pushes, attr.replace('pushes__', ''))
+            else:
+                data[attr] = getattr(self, attr)
+        if flat:
+            return json.dumps(data, sort_keys=True, ensure_ascii=False)
+        else:
+            return json.dumps(data, indent=4, sort_keys=True, ensure_ascii=False)
 
 
 class Pushes:
+    """class used to model all pushes of an article"""
 
     def __init__(self, article):
         self.article = article

@@ -16,21 +16,22 @@
 * [[class] Pushes](#class-pushes)
   * [example](#example-3)
   * [attribute](#attribute-3)
+* [[namedtuple] Msg](#namedtupe-msg)
 * [Self-defined Exceptions](#self-defined-exceptions)
 * [Utility Functions](#utility-functions)
 
 ## Quick Start
 
 ```python
-from ptt import ArticleListPage
+from ptt import Board
 
-page = ArticleListPage.from_board('gossiping')
+latest_page = Board('gossiping')
 
-for s in page:
-    if s.isremoved:
+for summary in latest_page:
+    if summary.isremoved:
         continue
-    a = s.read()
-    print(a.dump_json())
+    article = summary.read()
+    print(article.dump_json())
 ```
 
 ## class ArticleSummary: alias to Summary
@@ -127,6 +128,10 @@ article = ArticlePage.from_board_aid('gossiping', 'M.1513683634.A.2F5')
 
 # you can also use the alias "Article" instead
 article = Article.from_board_aid('gossiping', 'M.1513683634.A.2F5')
+
+# dump json string with aid and author
+string = article.dump_json('aid', 'author')
+print(string)
 ```
 
 ### attribute
@@ -151,13 +156,26 @@ article = Article.from_board_aid('gossiping', 'M.1513683634.A.2F5')
 
 | API Name | Return Type | Note |
 |---|---|---|
-| ArticlePage.dump_json() | str | dump json string with data:  board, aid, author, date, content, ip, pushes_count, pushes |
+| dump_json(*attrs, flat=False) | str | dump json string with specified attrs |
 
 ## class Pushes
 
 ### example
 
 ```python
+# get simple expression (list of dictionary) of a Pushes
+>>> pushes.simple_expression
+[...
+ {'content': '幫高調，雖然機會不高但還是希望可以找到！',
+  'ipdatetime': '12/19 22:22',
+  'type': '推',
+  'user': 'aquami'},
+ {'content': '住附近 突然發現有鼎吉路',
+  'ipdatetime': '12/21 01:34',
+  'type': '推',
+  'user': 'sh981215'},
+  ...
+]
 ```
 
 ### attribute
@@ -165,15 +183,15 @@ article = Article.from_board_aid('gossiping', 'M.1513683634.A.2F5')
 | Attr Name | Type | Note | Example |
 |---|---|---|---|
 | article | `ArticlePage` | ArticlePage of these pushes | |
-| msgs | list | list of `Msg`(self defined namedtuple) | |
+| msgs | list | list of `Msg`(self-defined namedtuple) | |
 | count['all'] | int | total msg in Pushes | `38` |
 | count['score'] | int | positive msg count - negative msg count | `23` |
 | count['like'] | int | positive msg count | `26` |
 | count['boo'] | int | negative msg count | `3` |
 | count['neutral'] | int | neutral msg count | `9` |
-| simple_expression | | | |
+| simple_expression | list | list of dictionaries which are used to model every `Msg` | |
 
-## nameedtuple Msg
+## namedtuple Msg
 
 ```python
 collections.namedtuple('Msg', ['type', 'user', 'content', 'ipdatetime'])
