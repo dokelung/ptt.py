@@ -1,6 +1,6 @@
 # ptt.py
 
-* [quick start](#quick-start)
+* [Quick Start](#quick-start)
 * [[class] ArticleSummary (alias: Summary)](#class-articlesummary-alias-to-summary)
   * [example](#example)
   * [attribute](#attribute)
@@ -12,9 +12,11 @@
 * [[class] ArticlePage (alias to Article)](#class-articlepage-alias-to-article)
   * [example](#example-2)
   * [attribute](#attribute-2)
-  * [API](#api-2)
+  * [API](#api-2)
+* [Self-defined Exceptions](#self-defined-exceptions)
+* [Utility Functions](#utility-functions)
 
-## quick start
+## Quick Start
 
 ```python
 from ptt import ArticleListPage
@@ -167,14 +169,14 @@ summary = lst_page.get_article_summary(0)
 collections.namedtuple('Msg', ['type', 'user', 'content', 'ipdatetime'])
 ```
 
-## self defined Exceptions
+## Self-defined Exceptions
 
 * `InValidBeautifulSoupTag`
 * `NoGivenURLForPage`
 * `PageNotFound`
 * `ArtitcleIsRemove`
 
-## utility functions
+## Utility Functions
 
 * `parse_std_url`: Parse standard ptt url
 * `parse_title`: Parse article title to get more info
