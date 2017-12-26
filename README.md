@@ -13,6 +13,9 @@
   * [example](#example-2)
   * [attribute](#attribute-2)
   * [API](#api-2)
+* [[class] Pushes](#class-pushes)
+  * [example](#example-3)
+  * [attribute](#attribute-3)
 * [Self-defined Exceptions](#self-defined-exceptions)
 * [Utility Functions](#utility-functions)
 
@@ -90,8 +93,6 @@ for summary in lst_page:
 summary = lst_page.get_article_summary(0)
 ```
 
-### example
-
 ### attribute
 
 | Attr Name | Type | Note | Example |
@@ -118,6 +119,16 @@ summary = lst_page.get_article_summary(0)
 
 ## class ArticlePage: alias to Article
 
+### example
+
+```python
+# get article by board name and aid
+article = ArticlePage.from_board_aid('gossiping', 'M.1513683634.A.2F5')
+
+# you can also use the alias "Article" instead
+article = Article.from_board_aid('gossiping', 'M.1513683634.A.2F5')
+```
+
 ### attribute
 
 | Attr Name | Type | Note | Example |
@@ -142,13 +153,12 @@ summary = lst_page.get_article_summary(0)
 |---|---|---|
 | ArticlePage.dump_json() | str | dump json string with data:  board, aid, author, date, content, ip, pushes_count, pushes |
 
-### classmethod (Constructor)
-
-| classmethod Name | Return Type | Note |
-|---|---|---|
-| ArticlePage.from_board_aid(board, aid) | ArticlePage | return `ArticlePage` by board name and aid |
-
 ## class Pushes
+
+### example
+
+```python
+```
 
 ### attribute
 
@@ -156,12 +166,12 @@ summary = lst_page.get_article_summary(0)
 |---|---|---|---|
 | article | `ArticlePage` | ArticlePage of these pushes | |
 | msgs | list | list of `Msg`(self defined namedtuple) | |
-| count['all'] | int | total msg in Pushes | |
-| count['score'] | int | positive msg count - negative msg count | |
-| count['like'] | int | positive msg count | |
-| count['boo'] | int | negative msg count | |
-| count['neutral'] | int | neutral msg count | |
-| simple_expression | str | string expression of all msgs | |
+| count['all'] | int | total msg in Pushes | `38` |
+| count['score'] | int | positive msg count - negative msg count | `23` |
+| count['like'] | int | positive msg count | `26` |
+| count['boo'] | int | negative msg count | `3` |
+| count['neutral'] | int | neutral msg count | `9` |
+| simple_expression | | | |
 
 ## nameedtuple Msg
 
@@ -171,10 +181,11 @@ collections.namedtuple('Msg', ['type', 'user', 'content', 'ipdatetime'])
 
 ## Self-defined Exceptions
 
-* `InValidBeautifulSoupTag`
-* `NoGivenURLForPage`
-* `PageNotFound`
-* `ArtitcleIsRemove`
+* `Error`: Base class for all exceptions raised by this module
+* `InValidBeautifulSoupTag`: Can not create ArticleSummary because of invalid bs tag
+* `NoGivenURLForPage`: Given None or empty url when build page
+* `PageNotFound`: Can not fetch page by given url
+* `ArtitcleIsRemove`: Can not read removed article from ArticleSummary
 
 ## Utility Functions
 
