@@ -88,6 +88,8 @@ for summary in lst_page:
 summary = lst_page.get_article_summary(0)
 ```
 
+### example
+
 ### attribute
 
 | Attr Name | Type | Note | Example |
@@ -112,7 +114,7 @@ summary = lst_page.get_article_summary(0)
 |---|---|---|
 | get_article_summary(index) | ArticleSummary | get `AritcleSummary` by given index |
 
-## class ArticlePage(Page): alias to Article
+## class ArticlePage: alias to Article
 
 ### attribute
 
