@@ -1,10 +1,18 @@
 # ptt.py
 
 * [quick start](#quick-start)
-* [[class] ArticleSummary (alias: Summary)]()
-  * [example]()
-  * [attribute]()
-  * [API]()
+* [[class] ArticleSummary (alias: Summary)](#class-articlesummary-alias-to-summary)
+  * [example](#example)
+  * [attribute](#attribute)
+  * [API](#api)
+* [[class] ArticleListPage](#class-articlelistpage)
+  * [example](#example-1)
+  * [attribute](#attribute-1)
+  * [API](#api-1)
+* [[class] ArticlePage (alias to Article)](#class-articlepage-alias-to-article)
+  * [example](#example-2)
+  * [attribute](#attribute-2)
+  * [API](#api-2)
 
 ## quick start
 
@@ -58,7 +66,7 @@ if not summary.isremoved:
 |---|---|---|
 | read() | ArticlePage | return corresponding `ArticlePage` if it is not removed |
 
-## class ArticleListPage(Page)
+## class ArticleListPage
 
 ### example
 
