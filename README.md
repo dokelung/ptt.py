@@ -16,6 +16,18 @@ for s in page:
 
 ## class ArticleSummary: alias to Summary
 
+### example
+
+```python
+# iterate all article summaries from specified board
+for summary in Board('gossiping'):
+    print(summary.title, summary.url)
+    
+# read article from summary
+if not summary.isremoved:
+    article = summary.read()
+```
+
 ### attribute
 
 | Attr Name | Type | Note | Example |
@@ -54,11 +66,11 @@ for s in page:
 | related_urls['next'] | str | next article list page url (`None` if not exists) | `None` |
 | related_urls['oldest'] | str | oldest article list page url | `'/bbs/Gossiping/index1.html'` |
 | related_urls['newest'] | str | newest article list page url | `'/bbs/Gossiping/index.html'` |
-| previous | ArticleListPage | `ArticleListPage` of `related_urls['previous']` | |
-| next | ArticleListPage | `ArticleListPage` of `related_urls['next']` | |
-| oldest | ArticleListPage | `ArticleListPage` of `related_urls['oldest']` | |
-| newest | ArticleListPage | `ArticleListPage` of `related_urls['newest']` | |
-| article_summaries | generator of ArticleSummary | ArticleSummary generator of this ArticleListPage | |
+| previous | ArticleListPage | `ArticleListPage` of `related_urls['previous']` | `ArticleListPage("/bbs/Gossiping/index30257.html")` |
+| next | ArticleListPage | `ArticleListPage` of `related_urls['next']` | `ArticleListPage("/bbs/Gossiping/index30258.html")` |
+| oldest | ArticleListPage | `ArticleListPage` of `related_urls['oldest']` | `ArticleListPage("/bbs/Gossiping/index1.html")` |
+| newest | ArticleListPage | `ArticleListPage` of `related_urls['newest']` | `ArticleListPage("/bbs/Gossiping/index.html")` |
+| article_summaries | generator of ArticleSummary | ArticleSummary generator of this ArticleListPage | `<generator object ArticleListPage.article_summaries.<locals>.<genexpr> at 0x033BD510>` |
 
 ### classmethod (Constructor)
 
