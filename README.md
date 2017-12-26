@@ -16,7 +16,7 @@
 * [[class] Pushes](#class-pushes)
   * [example](#example-3)
   * [attribute](#attribute-3)
-* [[namedtuple] Msg](#namedtupe-msg)
+* [[namedtuple] Msg](#namedtuple-msg)
 * [Self-defined Exceptions](#self-defined-exceptions)
 * [Utility Functions](#utility-functions)
 
