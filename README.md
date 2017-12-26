@@ -52,7 +52,27 @@ if not summary.isremoved:
 |---|---|---|
 | read() | ArticlePage | return corresponding `ArticlePage` if it is not removed |
 
-## class ArticleListPage(Page): alias to Board
+## class ArticleListPage(Page)
+
+### example
+
+```python
+# get page-20 of specified board
+lst_page = ArticleListPage.from_board('gossiping', 20)
+
+# you can also use the alias "Board" instead
+lst_page = Board('gossiping', 20)
+
+# get the newest page of specified board by given no page index
+lst_page = Board('gossiping')
+
+# iterate all article summaries of a article list page
+for summary in lst_page:
+    print(summary)
+    
+# get first article summary
+summary = lst_page.get_article_summary(0)
+```
 
 ### attribute
 
@@ -66,26 +86,17 @@ if not summary.isremoved:
 | related_urls['next'] | str | next article list page url (`None` if not exists) | `None` |
 | related_urls['oldest'] | str | oldest article list page url | `'/bbs/Gossiping/index1.html'` |
 | related_urls['newest'] | str | newest article list page url | `'/bbs/Gossiping/index.html'` |
-| previous | ArticleListPage | `ArticleListPage` of `related_urls['previous']` | `ArticleListPage("/bbs/Gossiping/index30257.html")` |
-| next | ArticleListPage | `ArticleListPage` of `related_urls['next']` | `ArticleListPage("/bbs/Gossiping/index30258.html")` |
-| oldest | ArticleListPage | `ArticleListPage` of `related_urls['oldest']` | `ArticleListPage("/bbs/Gossiping/index1.html")` |
-| newest | ArticleListPage | `ArticleListPage` of `related_urls['newest']` | `ArticleListPage("/bbs/Gossiping/index.html")` |
-| article_summaries | generator of ArticleSummary | ArticleSummary generator of this ArticleListPage | `<generator object ArticleListPage.article_summaries.<locals>.<genexpr> at 0x033BD510>` |
+| previous | ArticleListPage | `ArticleListPage` of `related_urls['previous']` | |
+| next | ArticleListPage | `ArticleListPage` of `related_urls['next']` | |
+| oldest | ArticleListPage | `ArticleListPage` of `related_urls['oldest']` | |
+| newest | ArticleListPage | `ArticleListPage` of `related_urls['newest']` | |
+| article_summaries | generator of ArticleSummary | ArticleSummary generator of this ArticleListPage | |
 
-### classmethod (Constructor)
+### API
 
-| classmethod Name | Return Type | Note |
+| API Name | Return Type | Note |
 |---|---|---|
-| ArticleListPage.from_board(board, index) | ArticleListPage | return `ArticleListPage` by board name (and index), alias to `Board(board, index)` |
-
-### as iterator
-
-Example:
-
-```python
-for ArticleSummary in ArticleListPage:
-    # do something with ArticleSummary
-```
+| get_article_summary(index) | ArticleSummary | get `AritcleSummary` by given index |
 
 ## class ArticlePage(Page): alias to Article
 
@@ -93,19 +104,19 @@ for ArticleSummary in ArticleListPage:
 
 | Attr Name | Type | Note | Example |
 |---|---|---|---|
-| title | str | title of Article | |
-| category | str | string in `'['` and `']'` of title | |
-| board | str | board name of Article | |
-| aid | str | Article ID | |
+| title | str | title of Article | `'[協尋] 12月19日 晚上9點前後  高雄市明誠路 鼎'` |
+| category | str | string in `'['` and `']'` of title | `'協尋'` |
+| board | str | board name of Article | `'Gossiping'` |
+| aid | str | Article ID | `'M.1513683634.A.2F5'` |
 | date | str | string of Article date | `'Tue Feb 16 20:15:23 2016'` |
-| datetime | datetime | datetime format of date | |
-| author | str | string of Article author | |
-| ip | str | author's ip | |
+| datetime | datetime | datetime format of date | `datetime.datetime(2017, 12, 19, 19, 40, 31)` |
+| author | str | string of Article author | `'jokerndmc (小人物)'` |
+| ip | str | author's ip | `'115.82.209.7'` |
 | signature | str | signature string of the author | |
-| pushes | `Pushes` | Pushes is a class which collects all pushes in article | |
+| pushes | Pushes | Pushes is a class which collects all pushes in article | |
 | content | str | main content of article using html format | |
-| isreply | bool | `True` if `'Re:'` in title else `False` | |
-| isforward | bool | `True` if `'Fw:'` in title else `False` | |
+| isreply | bool | `True` if `'Re:'` in title else `False` | `False` |
+| isforward | bool | `True` if `'Fw:'` in title else `False` | `False` |
 
 ### API
 
@@ -149,6 +160,19 @@ collections.namedtuple('Msg', ['type', 'user', 'content', 'ipdatetime'])
 
 ## utility functions
 
-* `parse_std_url`
-* `parse_title`
-* `parse_username`
+* `parse_std_url`: Parse standard ptt url
+* `parse_title`: Parse article title to get more info
+* `parse_username`: Parse user name to get its user account and nickname
+
+### example
+
+```python
+>>> parse_std_url('https://www.ptt.cc/bbs/Gossiping/M.1512057611.A.16B.html')
+('https://www.ptt.cc/bbs', 'Gossiping', 'M.1512057611.A.16B')
+
+>>> parse_title('Re: [問卦] 睡覺到底可不可以穿襪子')
+('問卦', True, False)
+
+>>> parse_username('seabox (歐陽盒盒)')
+('seabox', '歐陽盒盒')
+```
