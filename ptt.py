@@ -1,3 +1,4 @@
+import os
 import urllib
 import datetime
 import collections
@@ -231,6 +232,9 @@ class ArticleListPage(Page):
 class ArticlePage(Page):
     """class used to model article page"""
 
+    default_csv_attrs = ['board', 'aid', 'author', 'date', 'content', 'ip', 'pushes__count']
+    default_json_attrs = default_csv_attrs + ['pushes__simple_expression']
+
     def __init__(self, url):
         super().__init__(url)
 
@@ -330,25 +334,32 @@ class ArticlePage(Page):
     def __str__(self):
         return self.title
 
-    def dump_json(self, *attrs, flat=False):
+    def dump_json(self, *attrs, flat=True):
         """dump json string of this article with specified attrs"""
         data = {}
         if not attrs:
-            attrs = ['board', 'aid',
-                     'author',
-                     'date',
-                     'content',
-                     'ip',
-                     'pushes__count', 'pushes__simple_expression']
+            attrs = self.default_json_attrs
         for attr in attrs:
             if attr.startswith('pushes__'):
                 data[attr] = getattr(self.pushes, attr.replace('pushes__', ''))
             else:
                 data[attr] = getattr(self, attr)
         if flat:
-            return json.dumps(data, sort_keys=True, ensure_ascii=False)
+            return json.dumps(data, ensure_ascii=False)
         else:
-            return json.dumps(data, indent=4, sort_keys=True, ensure_ascii=False)
+            return json.dumps(data, indent=4, ensure_ascii=False)
+
+    def dump_csv(self, *attrs, delimiter=','):
+        """dump csv string of this article with specified attrs"""
+        cols = []
+        if not attrs:
+            attrs = self.default_csv_attrs
+        for attr in attrs:
+            if attr.startswith('pushes__'):
+                cols.append(getattr(self.pushes, attr.replace('pushes__', '')))
+            else:
+                cols.append(getattr(self, attr))
+        return delimiter.join(cols)
 
 
 class Pushes:
@@ -401,7 +412,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='ptt.py')
 
     parser.add_argument('-b', '--board', metavar='BOARD', type=str, required=True, help='board name')
-    parser.add_argument('-d', '--destination', metavar='DIR', type=str, default='.', help='destination')
+    parser.add_argument('-d', '--destination', metavar='DIR', type=str, default='', help='destination')
+    parser.add_argument('-f', '--format', choices=['json', 'csv'], default='json', help='output format')
 
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('-a', '--aid', metavar='ID', type=str, help='article id')
@@ -412,13 +424,39 @@ if __name__ == '__main__':
     t1 = time.time()
     if args.aid:
         article = Article.from_board_aid(args.board, args.aid)
-        print(article.aid, article.title, article.content)
+        fname = '{}-{}.{}'.format(args.board, args.aid, args.format)
+        fname = os.path.join(args.destination, fname)
+        with open(fname, 'w') as writer:
+            print('dump {} to {}...'.format(article.aid, fname))
+            if args.format == 'json':
+                print(article.dump_json(flat=False), file=writer)
+            elif args.foramt == 'csv':
+                print(','.join(Article.default_csv_attrs), file=writer)
+                print(article.dump_csv(delimiter=','), file=writer)
     else:
-        lst_page = Board(args.board)
-        for summary in lst_page:
-            if summary.isremoved:
-                continue
-            article = summary.read()
-            print(article.dump_json())
-    elapsed = time.time()-t1
+        latest_page_id = Board(args.board).idx
+        start_idx = args.index[0] if args.index[0] >= 0 else latest_page_id + args.index[0] + 1
+        end_idx = args.index[1] if args.index[1] >= 0 else latest_page_id + args.index[1] + 1
+        if start_idx <= end_idx:
+            fname = '{}-{}-{}.{}'.format(args.board, start_idx, end_idx, args.format)
+            fname = os.path.join(args.destination, fname)
+            with open(fname, 'w') as writer:
+                if args.format == 'json':
+                    print('{"articles": [', file=writer)
+                elif args.format == 'csv':
+                    print(','.join(Article.default_csv_attrs), file=writer)
+                for idx in range(start_idx, end_idx+1):
+                    article_page = Board(args.board, idx)
+                    for summary in article_page:
+                        if summary.isremoved:
+                            continue
+                        article = summary.read()
+                        print('dump {} to {}...'.format(article.aid, fname))
+                        if args.format == 'json':
+                            print(article.dump_json(flat=True), file=writer)
+                        elif args.format == 'csv':
+                            print(article.dump_csv(delimiter=','), file=writer)
+                if args.format == 'json':
+                    print(']}', file=writer)
+    elapsed = time.time() - t1
     print('total in {:.3} sec.'.format(elapsed))
