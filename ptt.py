@@ -415,7 +415,7 @@ Article = ArticlePage
 Board = ArticleListPage.from_board
 
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser(description='ptt.py')
 
     parser.add_argument('-b', '--board', metavar='BOARD', type=str, required=True, help='board name')
@@ -467,3 +467,7 @@ if __name__ == '__main__':
                     print(']}', file=writer)
     elapsed = time.time() - t1
     print('total in {:.3} sec.'.format(elapsed))
+
+
+if __name__ == '__main__':
+    main()
