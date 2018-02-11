@@ -433,7 +433,7 @@ def main():
         article = Article.from_board_aid(args.board, args.aid)
         fname = '{}-{}.{}'.format(args.board, args.aid, args.format)
         fname = os.path.join(args.destination, fname)
-        with open(fname, 'w') as writer:
+        with open(fname, 'w', encoding='utf-8') as writer:
             print('dump {} to {}...'.format(article.aid, fname))
             if args.format == 'json':
                 print(article.dump_json(flat=False), file=writer)
@@ -447,7 +447,7 @@ def main():
         if start_idx <= end_idx:
             fname = '{}-{}-{}.{}'.format(args.board, start_idx, end_idx, args.format)
             fname = os.path.join(args.destination, fname)
-            with open(fname, 'w') as writer:
+            with open(fname, 'w', encoding='utf-8') as writer:
                 if args.format == 'json':
                     print('{"articles": [', file=writer)
                 elif args.format == 'csv':
