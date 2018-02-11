@@ -232,8 +232,9 @@ class ArticleListPage(Page):
 class ArticlePage(Page):
     """class used to model article page"""
 
-    default_csv_attrs = ['board', 'aid', 'author', 'date', 'content', 'ip', 'pushes__count']
-    default_json_attrs = default_csv_attrs + ['pushes__simple_expression']
+    default_attrs = ['board', 'aid', 'author', 'date', 'content', 'ip']
+    default_csv_attrs = default_attrs + ['pushes.count.score']
+    default_json_attrs = default_attrs + ['pushes.count', 'pushes.simple_expression']
 
     def __init__(self, url):
         super().__init__(url)
@@ -334,16 +335,24 @@ class ArticlePage(Page):
     def __str__(self):
         return self.title
 
+    @classmethod
+    def _recur_getattr(cls, obj, attr):
+        if not '.' in attr:
+            try:
+                return getattr(obj, attr)
+            except:
+                return obj[attr]
+        attr1, _, attr2 = attr.partition('.')
+        obj = cls._recur_getattr(obj, attr1)
+        return cls._recur_getattr(obj, attr2)
+
     def dump_json(self, *attrs, flat=True):
         """dump json string of this article with specified attrs"""
         data = {}
         if not attrs:
             attrs = self.default_json_attrs
         for attr in attrs:
-            if attr.startswith('pushes__'):
-                data[attr] = getattr(self.pushes, attr.replace('pushes__', ''))
-            else:
-                data[attr] = getattr(self, attr)
+            data[attr] = self._recur_getattr(self, attr)
         if flat:
             return json.dumps(data, ensure_ascii=False)
         else:
@@ -355,10 +364,8 @@ class ArticlePage(Page):
         if not attrs:
             attrs = self.default_csv_attrs
         for attr in attrs:
-            if attr.startswith('pushes__'):
-                cols.append(getattr(self.pushes, attr.replace('pushes__', '')))
-            else:
-                cols.append(getattr(self, attr))
+            cols.append(self._recur_getattr(self, attr))
+        cols = [repr(col) if '\n' in str(col) else str(col) for col in cols]
         return delimiter.join(cols)
 
 
@@ -413,7 +420,7 @@ if __name__ == '__main__':
 
     parser.add_argument('-b', '--board', metavar='BOARD', type=str, required=True, help='board name')
     parser.add_argument('-d', '--destination', metavar='DIR', type=str, default='', help='destination')
-    parser.add_argument('-f', '--format', choices=['json', 'csv'], default='json', help='output format')
+    parser.add_argument('-f', '--format', choices=['json', 'csv'], default='json', help='output format (default: json)')
 
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('-a', '--aid', metavar='ID', type=str, help='article id')
@@ -430,7 +437,7 @@ if __name__ == '__main__':
             print('dump {} to {}...'.format(article.aid, fname))
             if args.format == 'json':
                 print(article.dump_json(flat=False), file=writer)
-            elif args.foramt == 'csv':
+            elif args.format == 'csv':
                 print(','.join(Article.default_csv_attrs), file=writer)
                 print(article.dump_csv(delimiter=','), file=writer)
     else:

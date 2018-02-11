@@ -37,7 +37,7 @@ class TestOthers(unittest.TestCase):
                 continue
             if idx == 0:
                 _, _, thing = s.title.rpartition('月')
-                self.assertEqual(thing, '八卦板置底閒聊文')
+                self.assertIn('置底閒聊文', thing)
                 self.assertEqual(s.board, self.board)
                 score_lst = [str(i) for i in range(0, 100)]
                 score_lst.extend(['', '爆', 'X'])
