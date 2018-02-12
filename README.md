@@ -1,6 +1,10 @@
 # ptt.py
 
+* [Installation](#installation)
 * [Quick Start](#quick-start)
+  * [Command Line Interface](#command-line-interface)
+  * [Use as Library](#use-as-library)
+* [Requirements](#requirements)
 * [[class] ArticleSummary (alias: Summary)](#class-articlesummary-alias-to-summary)
   * [example](#example)
   * [attribute](#attribute)
@@ -9,7 +13,7 @@
   * [example](#example-1)
   * [attribute](#attribute-1)
   * [API](#api-1)
-* [[class] ArticlePage (alias to Article)](#class-articlepage-alias-to-article)
+* [[class] ArticlePage (alias: Article)](#class-articlepage-alias-to-article)
   * [example](#example-2)
   * [attribute](#attribute-2)
   * [API](#api-2)
@@ -20,7 +24,68 @@
 * [Self-defined Exceptions](#self-defined-exceptions)
 * [Utility Functions](#utility-functions)
 
+## Installation
+
+```sh
+$ pip install ptt.py
+```
+
+or you can clone this repo directly.
+
+```sh
+$ git clone https://github.com/dokelung/ptt.py.git
+```
+
 ## Quick Start
+
+### Command Line Interface
+
+If you already installed ptt.py with pip, just use command `ptt` to start crawling:
+
+```sh
+# $ ptt -b <board name> -i <start_page> <end_page> -f <output format>  
+
+# dump article jsons in the latest page of board "gossiping"
+# -1 means last page and -2 means second last page...
+$ ptt -b gossiping -i -1 -1 -f json
+```
+
+or you can run library module as script:
+
+```sh
+$ python -m ptt -b gossiping -i -1 -1 -f json 
+```
+
+If you want to use it directly, just cd to repo dir and run script `ptt.py`:
+
+```sh
+$ cd ptt.py
+$ python ptt.py -b gossiping -i -1 -1 -f json
+```
+
+Use option `-h` to get more details:
+
+```sh
+$ ptt -h
+usage: ptt [-h] -b BOARD [-d DIR] [-f {json,csv}]
+           (-a ID | -i START END START END)
+
+ptt.py
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -b BOARD, --board BOARD
+                        board name
+  -d DIR, --destination DIR
+                        destination
+  -f {json,csv}, --format {json,csv}
+                        output format (default: json)
+  -a ID, --aid ID       article id
+  -i START END START END, --index START END START END
+                        start/end index
+```
+
+### Use as Library
 
 ```python
 from ptt import Board
@@ -33,6 +98,12 @@ for summary in latest_page:
     article = summary.read()
     print(article.dump_json())
 ```
+
+## Requirements
+
+* Python3.3 or later
+* [Requests](http://docs.python-requests.org/en/master/)
+* [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
 
 ## class ArticleSummary: alias to Summary
 
@@ -157,6 +228,7 @@ print(string)
 | API Name | Return Type | Note |
 |---|---|---|
 | dump_json(*attrs, flat=False) | str | dump json string with specified attrs |
+| dump_csv(*attrs, delimiter=',') | str | dump csv string with specified attrs |
 
 ## class Pushes
 
